@@ -1,0 +1,12 @@
+name: cea
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.12
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - jupyter
+  - pytest 
