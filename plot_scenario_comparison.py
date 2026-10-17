@@ -4,7 +4,9 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 from src.scenarios import make_scenarios, run_scenario
-from src.indicators import summarise
+from src.indicators import summarise, select_day
+
+N_DAYS = 7
 
 names = ['A_linear', 'B_heat', 'C_heat_water']
 labels = ['A', 'B', 'C']
@@ -12,7 +14,12 @@ legend_text = ['A: no recovery', 'B: heat recovery', 'C: heat + water recovery']
 colors = ['#2a78d6', '#eb6834', '#1baf7a']
 
 scenarios = make_scenarios()
-summaries = {n: summarise(run_scenario(scenarios[n]), scenarios[n]) for n in names}
+
+def steady_state_summary(p):
+    r = run_scenario(p, duration_s=N_DAYS * 86400)
+    return summarise(select_day(r, N_DAYS - 1), p)
+
+summaries = {n: steady_state_summary(scenarios[n]) for n in names}
 
 eui = [summaries[n]['EUI_kWh_per_kg'] for n in names]
 wui = [summaries[n]['WUI_L_per_kg'] for n in names]
@@ -51,6 +58,8 @@ fig.legend(handles, legend_text, loc='lower center', ncol=3, frameon=False,
            labelcolor=INK, fontsize=10)
 fig.suptitle('Circularity trade-off: heat recovery saves a little energy; water recovery costs energy but saves most of the water',
             color=INK, fontsize=11)
+fig.text(0.5, 0.925, 'Steady state: day %d of a %d-day simulation' % (N_DAYS, N_DAYS),
+         ha='center', va='bottom', color=MUTED, fontsize=9)
 fig.tight_layout(rect=(0, 0.07, 1, 0.95))
 
 os.makedirs('figures', exist_ok=True)
