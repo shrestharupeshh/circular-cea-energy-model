@@ -9,6 +9,7 @@ from src.psychro import abs_humidity, rh_from_chi
 from src.lighting import lamp_electrical_power, thermal_fraction
 from src.crop import transpiration
 from src.hvac import dehumidifier
+from src.storage import discharge_rate
 
 BASE = {
     # room and envelope
@@ -75,7 +76,7 @@ def run_scenario(p, weather=WEATHER, duration_s=DURATION_S):
     Q_heat = np.minimum(np.maximum(0.0, p['heat_gain'] * (p['T_heat_setpoint'] - T_air)),
                         p['heat_capacity'])
     if p['heat_recovery']:
-        Q_discharge = np.where(T_tank <= p['T_tank_min'], 0.0, Q_heat)
+        Q_discharge = discharge_rate(Q_heat, T_tank, p['T_tank_min'])
     else:
         Q_discharge = np.zeros_like(t)
     if p['water_recovery']:

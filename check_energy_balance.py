@@ -4,7 +4,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 from src.model import model_full
 from src.psychro import abs_humidity
-from src.storage import tank_capacitance
+from src.storage import tank_capacitance, charge_rate, discharge_rate
 
 params = {
     'volume': 300.0, 'floor_area': 100.0, 'area_env': 160.0,
@@ -38,8 +38,8 @@ Q_cool = np.minimum(np.maximum(0.0, params['cool_gain'] * (T_air - params['T_set
                     params['cool_capacity'])
 Q_heat = np.minimum(np.maximum(0.0, params['heat_gain'] * (params['T_heat_setpoint'] - T_air)),
                    params['heat_capacity'])
-Q_charge = np.where(T_tank >= params['T_tank_max'], 0.0, 0.85 * Q_cool)
-Q_discharge = np.where(T_tank <= params['T_tank_min'], 0.0, Q_heat)
+Q_charge = charge_rate(Q_cool, T_tank, params['T_tank_max'])
+Q_discharge = discharge_rate(Q_heat, T_tank, params['T_tank_min'])
 Q_loss = params['tank_UA'] * (T_tank - T_air)
 
 E_in = np.trapezoid(Q_charge, t)

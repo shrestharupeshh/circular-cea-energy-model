@@ -34,3 +34,10 @@ def summarise(results, params):
         'WUI_L_per_kg': water_use_intensity(results['M_fresh'], t, yield_kg),
         'water_recovered': recovery_fraction(results['M_dehum'], results['M_crop'], t)
     }
+
+def select_day(results, day):
+    """Return the part of a multi-day run that falls in day number `day` (0 = first day)."""
+    t = results['t']
+    mask = (t >= day * 86400.0) & (t <= (day + 1) * 86400.0)
+    return {key: (value[mask] if isinstance(value, np.ndarray) else value)
+            for key, value in results.items()}
