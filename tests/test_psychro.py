@@ -1,11 +1,11 @@
-"""tests/test_psychro.py"""
+"""tests/test_psychro.py - the humidity functions against known values."""
 
 from src.psychro import e_sat, vpd, abs_humidity, rh_from_chi
 
 
 def test_esat_known_values():
     assert abs(e_sat(20.0) - 2339.0) < 15.0
-    assert abs(e_sat(25.0) - 3170.0) < 20.0
+    assert abs(e_sat(25.0) - 3169.0) < 20.0
     assert abs(e_sat(30.0) - 4245.0) < 30.0
 
 
