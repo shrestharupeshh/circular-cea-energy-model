@@ -58,12 +58,12 @@ WEATHER = {
 T0, RH0, T_TANK0 = 22.0, 0.60, 40.0
 DURATION_S = 86400
 
-def run_scenario(p, weather=WEATHER, duration_s=DURATION_S):
+def run_scenario(p, weather=WEATHER, duration_s=DURATION_S, rtol=1e-6, atol=1e-8, dt=60):
     """Simulate one scenario and return its time series (W, kg/s, C)."""
     y0 = [T0, abs_humidity(T0, RH0), 0.0, T_TANK0]
-    t_eval = np.arange(0, duration_s + 1, 60)
+    t_eval = np.arange(0, duration_s + 1, dt)
     sol = solve_ivp(model_full, (0, duration_s), y0, method='BDF', t_eval=t_eval,
-                    args=(p, weather), rtol=1e-6, atol=1e-8)
+                    args=(p, weather), rtol=rtol, atol=atol)
     t = sol.t
     T_air, chi_air, V_rec, T_tank = sol.y
     RH = rh_from_chi(T_air, chi_air)
