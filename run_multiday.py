@@ -1,9 +1,9 @@
 """run_multiday.py - run several days so start-up effect fade, then compare the last day."""
 
-from src.scenarios import make_scenarios, run_scenario
+from src.scenarios import make_scenarios, run_scenario, N_DAYS
 from src.indicators import summarise, select_day
 
-N_DAYS = 7
+SHOW_DAYS = (0, 1, 2, 6, 13, 29, N_DAYS - 1)
 
 final = {}
 for name, p in make_scenarios().items():
@@ -13,8 +13,9 @@ for name, p in make_scenarios().items():
     for day in range(N_DAYS):
         s = summarise(select_day(r, day), p)
         eui_by_day.append(s['EUI_kWh_per_kg'])
-        print('   day %d: EUI %.3f kWh/kg, WUI %.3f L/kg, tank end %.1f C' % (
-            day + 1, s['EUI_kWh_per_kg'], s['WUI_L_per_kg'], select_day(r, day)['T_tank'][-1]))
+        if day in SHOW_DAYS:
+            print('   day %d: EUI %.3f kWh/kg, WUI %.3f L/kg, tank end %.1f C' % (
+                day + 1, s['EUI_kWh_per_kg'], s['WUI_L_per_kg'], select_day(r, day)['T_tank'][-1]))
     drift = 100 * abs(eui_by_day[-1] - eui_by_day[-2]) / eui_by_day[-2]
     print('   change in EUI between the last two days: %.3f %%' % drift)
     final[name] = summarise(select_day(r, N_DAYS - 1), p)

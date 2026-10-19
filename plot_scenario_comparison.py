@@ -3,10 +3,9 @@
 import os
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
-from src.scenarios import make_scenarios, run_scenario
+from src.scenarios import make_scenarios, run_scenario, N_DAYS
 from src.indicators import summarise, select_day
 
-N_DAYS = 7
 
 names = ['A_linear', 'B_heat', 'C_heat_water']
 labels = ['A', 'B', 'C']
@@ -40,7 +39,8 @@ for ax, values, ylabel, title in panels:
     ax.bar(labels, values, color=colors, width=0.5, edgecolor='none', zorder=3)
     base = values[0]
     for i, v in enumerate(values):
-        text = '%.1f' % v if i == 0 else '%.1f (%+.1f%%)' % (v, 100 * (v - base) / base)
+        pct = round(100 * (v - base) / base, 1) + 0.0      # +0.0 turns -0.0 into 0.0
+        text = '%.1f' % v if i == 0 else '%.1f (%+.1f%%)' % (v, pct)
         ax.text(i, v + max(values) * 0.02, text, ha='center', va='bottom',
                 color=INK, fontsize=10)
     ax.set_ylim(0, max(values) * 1.18)
@@ -56,8 +56,8 @@ for ax, values, ylabel, title in panels:
 handles = [Patch(facecolor=c, edgecolor='none') for c in colors]
 fig.legend(handles, legend_text, loc='lower center', ncol=3, frameon=False,
            labelcolor=INK, fontsize=10)
-fig.suptitle('Circularity trade-off: heat recovery saves a little energy; water recovery costs energy but saves most of the water',
-            color=INK, fontsize=11)
+fig.suptitle('Circularity trade-off: heat recovery saves almost nothing; water recovery costs energy but cuts fresh water use',
+              color=INK, fontsize=11)
 fig.text(0.5, 0.925, 'Steady state: day %d of a %d-day simulation' % (N_DAYS, N_DAYS),
          ha='center', va='bottom', color=MUTED, fontsize=9)
 fig.tight_layout(rect=(0, 0.07, 1, 0.95))

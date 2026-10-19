@@ -1,9 +1,8 @@
 """run_convergence.py - do the results depend on the numerical settings?"""
 
-from src.scenarios import make_scenarios, run_scenario
+from src.scenarios import make_scenarios, run_scenario, N_DAYS
 from src.indicators import summarise, select_day
 
-N_DAYS = 7
 
 # (label, solver relative tolerance, solver absolute tolerance, output interval is s)
 SETTINGS = [

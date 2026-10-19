@@ -14,7 +14,7 @@ from src.crop import transpiration
 from src.hvac import dehumidifier
 from src.lighting import lamp_electrical_power, thermal_fraction
 from src.storage import tank_capacitance, charge_rate, discharge_rate
-from src.scenarios import make_scenarios, run_scenario, WEATHER, T0, RH0, T_TANK0
+from src.scenarios import make_scenarios, run_scenario, WEATHER, T0, RH0, T_TANK0, N_DAYS
 from src.indicators import summarise, select_day
 
 @pytest.fixture(scope='module')
@@ -74,19 +74,19 @@ def test_reference_tank_energies(solution):
     E_out = np.trapezoid(discharge_rate(Q_heat, T_tank, p['T_tank_min']), t) / 1e6
     E_loss = np.trapezoid(p['tank_UA'] * (T_tank - T_air), t) / 1e6
     E_stored = tank_capacitance(p['tank_volume']) * (T_tank[-1] - T_tank[0]) / 1e6
-    assert E_in == pytest.approx(202.0, abs=0.5)
-    assert E_out == pytest.approx(32.4, abs=0.2)
-    assert E_loss == pytest.approx(24.0, abs=0.2)
-    assert E_stored == pytest.approx(145.5, abs=0.5)
+    assert E_in == pytest.approx(47.5, abs=0.5)
+    assert E_out == pytest.approx(32.8, abs=0.2)
+    assert E_loss == pytest.approx(21.2, abs=0.2)
+    assert E_stored == pytest.approx(-6.4, abs=0.2)
 
 
 def test_reference_scenario_results():
-    """Steady-state results (day 7 of 7) that we validated and that the README QUOTES."""
-    expected = {'A_linear': (25.34, 7.50), 'B_heat': (24.55, 7.51), 'C_heat_water': (28.22, 2.53)}
+    """Steady-state results (day 60 of 60) that we validated and that the README QUOTES."""
+    expected = {'A_linear': (13.13, 4.16), 'B_heat': (13.11, 4.16), 'C_heat_water': (14.13, 2.30)}
     for name, p in make_scenarios().items():
-        r = run_scenario(p, duration_s=7 * 86400)
+        r = run_scenario(p, duration_s=N_DAYS * 86400)
         assert r['success']
-        s = summarise(select_day(r, 6), p)
+        s = summarise(select_day(r, N_DAYS - 1), p)
         eui, wui = expected[name]
         assert s['EUI_kWh_per_kg'] == pytest.approx(eui, abs=0.02)
         assert s['WUI_L_per_kg'] == pytest.approx(wui, abs=0.02)

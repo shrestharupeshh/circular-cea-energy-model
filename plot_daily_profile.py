@@ -3,12 +3,13 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from src.scenarios import make_scenarios, run_scenario, WEATHER
+from src.scenarios import make_scenarios, run_scenario, WEATHER, N_DAYS
+from src.indicators import select_day
 
 p = make_scenarios()['C_heat_water']
-r = run_scenario(p)
+r = select_day(run_scenario(p, duration_s=N_DAYS * 86400), N_DAYS - 1)
 
-time_h = r['t'] / 3600.0
+time_h = (r['t'] - (N_DAYS - 1) * 86400.0) / 3600.0
 T_out = WEATHER['T_out'](r['t'])
 
 fig, axes = plt.subplots(3, 1, figsize=(10, 9), sharex=True)
@@ -22,6 +23,7 @@ axes[0].legend(loc='center left')
 axes[1].plot(time_h, r['RH'] * 100, color='tab:blue', label='Room RH')
 axes[1].axhline(p['RH_setpoint'] * 100, color='gray', linestyle=':', label='Dehumidifier setpoint')
 axes[1].set_ylabel('Relative humidity (%)')
+axes[1].set_ylim(70, 80)
 axes[1].legend(loc='lower right')
 
 axes[2].plot(time_h, r['P_lamp'] / 1000.0, label='Lighting')
@@ -32,7 +34,7 @@ axes[2].set_xlabel('Time of day (h)')
 axes[2].set_xlim(0, 24)
 axes[2].legend(loc='center left')
 
-fig.suptitle('Scenario C: one simulated day')
+fig.suptitle('Scenario C: day %d of a %d-day simulation' % (N_DAYS, N_DAYS))
 fig.tight_layout()
 
 os.makedirs('figures', exist_ok=True)

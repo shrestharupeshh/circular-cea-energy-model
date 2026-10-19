@@ -16,7 +16,7 @@ BASE = {
     'volume': 300.0, 'floor_area': 100.0, 'area_env': 160.0,
     'U_envelope': 0.4, 'ACH': 0.5,
     # lighting
-    'P_lamp': 200.0, 'efficacy': 3.0,
+    'P_lamp': 100.0, 'efficacy': 3.0,
     'photoperiod_on': 6, 'photoperiod_off': 22,
     # climate control
     'T_setpoint': 24.0, 'RH_setpoint': 0.75,
@@ -57,13 +57,15 @@ WEATHER = {
 
 T0, RH0, T_TANK0 = 22.0, 0.60, 40.0
 DURATION_S = 86400
+N_DAYS = 60      # days simulated before we read off the steady state (the tank needs weeks to settle)
 
 def run_scenario(p, weather=WEATHER, duration_s=DURATION_S, rtol=1e-6, atol=1e-8, dt=60):
     """Simulate one scenario and return its time series (W, kg/s, C)."""
     y0 = [T0, abs_humidity(T0, RH0), 0.0, T_TANK0]
     t_eval = np.arange(0, duration_s + 1, dt)
-    sol = solve_ivp(model_full, (0, duration_s), y0, method='BDF', t_eval=t_eval,
-                    args=(p, weather), rtol=rtol, atol=atol)
+    with np.errstate(over='ignore'):    # long runs print a harmless overflow warning from the solver's Jacobian step
+          sol = solve_ivp(model_full, (0, duration_s), y0, method='BDF', t_eval=t_eval,
+                          args=(p, weather), rtol=rtol, atol=atol)
     t = sol.t
     T_air, chi_air, V_rec, T_tank = sol.y
     RH = rh_from_chi(T_air, chi_air)

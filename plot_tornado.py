@@ -13,7 +13,7 @@ df = df[df['parameter'] != 'baseline'].copy()
 df['d_EUI'] = 100 * (df['EUI_C'] - base['EUI_C']) / base['EUI_C']          # % change in EUI of C
 df['d_pen'] = df['penalty'] - (100 * (base['EUI_C'] / base['EUI_A'] - 1))  # change in C-vs-A penalty, points
 
-names = {'U_envelope': 'Wall U-value', 'ACH': 'Air changes (ACH)', 'efficacy': 'Lamp efficacy',
+names = {'P_lamp': 'Lamp power', 'U_envelope': 'Wall U-value', 'ACH': 'Air changes (ACH)', 'efficacy': 'Lamp efficacy',
          'LAI': 'Leaf area index', 'capacitance_multiplier': 'Thermal mass multiplier',
          'COP_cool': 'Cooling COP', 'COP_dehum': 'Dehumidifier COP', 'RH_setpoint': 'RH setpoint',
          'tank_volume': 'Tank volume', 'tank_UA': 'Tank heat loss (UA)',
@@ -55,7 +55,7 @@ axes[1].margins(x=0.18)
 fig.legend([Patch(facecolor=C_LOW), Patch(facecolor=C_HIGH)],
             ['Input lowered (-20 %, or outdoor -5 K)', 'Input raised (+20 %, or outdoor +5 K)'],
             loc='lower center', ncol=2, frameon=False, labelcolor=INK, fontsize=10)
-fig.suptitle('Which assumptions matter? One-at-a-time sensitivity of scenario C (steady state, day 7)',
+fig.suptitle('Which assumptions matter? One-at-a-time sensitivity of scenario C (steady state, day 60)',
             color=INK, fontsize=11)
 fig.tight_layout(rect=(0, 0.07, 1, 0.95))
 os.makedirs('figures', exist_ok=True)
