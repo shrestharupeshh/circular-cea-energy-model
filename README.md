@@ -15,6 +15,7 @@ A closed growing room turns almost all of its lighting electricity into heat, an
 All three scenarios see the same weather, the same lights and the same crop.
 
 
+# Author
 Rupesh Shrestha, mechanical engineer (MEng, UC Berkeley). [shrestharupesh.com](https://www.shrestharupesh.com)
 
 This project is designed with the help of Claude AI for the purpose of self training to learn system dynamic modeling in CEA.
