@@ -10,6 +10,7 @@ params = {
     'U_envelope': 0.4, 'ACH': 0.5,
     'P_lamp': 200.0, 'efficacy': 3.0,
     'photoperiod_on': 6, 'photoperiod_off': 22,
+    'f_biomass': 0.02,
     'T_setpoint': 24.0, 'cool_gain': 4000.0, 'cool_capacity': 15000.0,
     'capacitance_multiplier': 12.0,
     'LAI': 2.5,

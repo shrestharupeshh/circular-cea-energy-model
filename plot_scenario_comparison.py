@@ -56,7 +56,7 @@ for ax, values, ylabel, title in panels:
 handles = [Patch(facecolor=c, edgecolor='none') for c in colors]
 fig.legend(handles, legend_text, loc='lower center', ncol=3, frameon=False,
            labelcolor=INK, fontsize=10)
-fig.suptitle('Circularity trade-off: heat recovery saves almost nothing; water recovery costs energy but cuts fresh water use',
+fig.suptitle('Circularity trade-off: heat recovery saves a little energy; water recovery costs energy but cuts fresh water use',
               color=INK, fontsize=11)
 fig.text(0.5, 0.925, 'Steady state: day %d of a %d-day simulation' % (N_DAYS, N_DAYS),
          ha='center', va='bottom', color=MUTED, fontsize=9)

@@ -35,7 +35,6 @@ cases = [('baseline', 1.0, {}, WEATHER)]
 for key in TARGETS:
     for factor in (0.8, 1.2):
         cases.append((key, factor, {key: BASE[key] * factor}, WEATHER))
-cases.append(('P_lamp', 2.0, {'P_lamp': BASE['P_lamp'] * 2.0}, WEATHER))
 for delta in (-5.0, 5.0):
     cases.append(('T_out_mean', delta, {}, weather_shifted(delta)))
 

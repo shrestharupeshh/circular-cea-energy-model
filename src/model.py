@@ -102,7 +102,7 @@ def model_full(t, y, p, weather):
     P_lamp = lamp_electrical_power(t, p['P_lamp'], p['floor_area'],
                                     p['photoperiod_on'], p['photoperiod_off'])
     f_therm = thermal_fraction(p['efficacy'])
-    Q_lamp = P_lamp * f_therm
+    Q_lamp = P_lamp * (1.0 - p['f_biomass'])    # nearly all lamp input ends up as room heat; a little is stored in biomass
     R_net = P_lamp * (1.0 - f_therm) / p['floor_area']
 
     # --- crop ---

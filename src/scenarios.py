@@ -18,6 +18,7 @@ BASE = {
     # lighting
     'P_lamp': 100.0, 'efficacy': 3.0,
     'photoperiod_on': 6, 'photoperiod_off': 22,
+    'f_biomass': 0.02,
     # climate control
     'T_setpoint': 24.0, 'RH_setpoint': 0.75,
     'cool_gain': 4000.0, 'cool_capacity': 15000.0,
@@ -57,7 +58,7 @@ WEATHER = {
 
 T0, RH0, T_TANK0 = 22.0, 0.60, 40.0
 DURATION_S = 86400
-N_DAYS = 60      # days simulated before we read off the steady state (the tank needs weeks to settle)
+N_DAYS = 60      # days simulated before we read off the steady state (baseline settles in about 3 days; the rest is margin)
 
 def run_scenario(p, weather=WEATHER, duration_s=DURATION_S, rtol=1e-6, atol=1e-8, dt=60):
     """Simulate one scenario and return its time series (W, kg/s, C)."""
