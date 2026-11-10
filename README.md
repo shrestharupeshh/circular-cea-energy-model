@@ -24,6 +24,8 @@
 
 ---
 
+> **New: Vertical Farming Energy Simulator.** An interactive simulator built on this model's approach, with crop growth that responds to light and temperature, lives in [`vertical_farming_simulator/`](vertical_farming_simulator/). Run it with `streamlit run app.py` from that folder. The code and results on this page are unchanged.
+
 ## Overview
 
 A closed growing room turns almost all of its lighting electricity into heat, and its crop transpires several litres of water per kilogram of produce. A conventional ("linear") room cools the air, vents the humid air and throws both the heat and the water away. A circular room can capture both. Capturing them is not free, so the interesting question is the trade-off.

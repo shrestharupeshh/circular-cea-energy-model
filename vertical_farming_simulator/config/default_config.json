@@ -1,0 +1,104 @@
+{
+  "scenario_name": "A - Baseline",
+  "farm": {
+    "footprint_area_m2": 100.0,
+    "room_height_m": 3.0,
+    "n_layers": 4
+  },
+  "crop": {
+    "crop_type": "lettuce",
+    "plant_density_per_m2": 25.0,
+    "occupied_fraction": 1.0,
+    "initial_dry_mass_g": 0.05,
+    "max_dry_mass_g": 12.0,
+    "base_growth_rate_per_day": 0.55,
+    "use_temperature_modifier": true,
+    "temp_min_c": 4.0,
+    "temp_opt_c": 22.0,
+    "temp_max_c": 32.0,
+    "use_light_modifier": true,
+    "light_half_saturation_ppfd": 200.0,
+    "dry_matter_fraction": 0.05,
+    "marketable_fraction": 0.85,
+    "target_fresh_mass_g": 150.0,
+    "transpiration_enabled": true,
+    "transpiration_light_coeff": 0.30,
+    "transpiration_vpd_coeff_w_m2_pa": 0.010,
+    "dark_transpiration_factor": 0.3,
+    "max_leaf_area_index": 2.5,
+    "light_extinction_coeff": 0.7
+  },
+  "lighting": {
+    "input_mode": "ppfd",
+    "ppfd_umol_m2_s": 250.0,
+    "power_density_w_m2": 105.04,
+    "installed_power_w": 42016.8,
+    "photon_efficacy_umol_j": 2.8,
+    "utilisation_factor": 0.85,
+    "heat_fraction_to_room": 0.98,
+    "schedule_type": "photoperiod",
+    "start_hour": 6.0,
+    "photoperiod_h": 16.0,
+    "dimming_level": 1.0,
+    "custom_hourly_fractions": [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0]
+  },
+  "environment": {
+    "weather_mode": "daily_profile",
+    "outdoor_temp_c": 20.0,
+    "outdoor_temp_amplitude_k": 6.0,
+    "outdoor_temp_peak_hour": 15.0,
+    "outdoor_rh_percent": 50.0,
+    "outdoor_rh_amplitude_percent": 10.0,
+    "weather_csv_path": null,
+    "csv_temperature_unit": "C"
+  },
+  "envelope": {
+    "u_wall_w_m2k": 0.4,
+    "u_roof_w_m2k": 0.4,
+    "u_floor_w_m2k": 0.0,
+    "wall_area_m2": null,
+    "roof_area_m2": null,
+    "floor_area_m2": null,
+    "thermal_mass_multiplier": 12.0,
+    "air_changes_per_hour": 0.2
+  },
+  "hvac": {
+    "control_mode": "capacity_limited",
+    "temp_setpoint_c": 22.0,
+    "thermostat_deadband_k": 1.0,
+    "cooling_capacity_kw": 60.0,
+    "cooling_cop": 3.0,
+    "heating_enabled": true,
+    "heating_setpoint_c": 18.0,
+    "heating_capacity_kw": 10.0,
+    "heating_cop": 1.0,
+    "dehumidification_enabled": true,
+    "rh_setpoint_percent": 70.0,
+    "max_moisture_removal_kg_h": 40.0
+  },
+  "equipment": {
+    "circulation_fan_power_w": 1500.0,
+    "circulation_fan_heat_fraction": 1.0,
+    "ventilation_fan_sfp_w_per_m3s": 1000.0,
+    "ventilation_fan_heat_fraction": 0.0,
+    "pump_power_w": 500.0,
+    "pump_heat_fraction": 0.5,
+    "auxiliary_power_w": 500.0,
+    "auxiliary_heat_fraction": 1.0
+  },
+  "simulation": {
+    "duration_days": 30.0,
+    "time_step_min": 5.0,
+    "initial_temp_c": 22.0,
+    "initial_rh_percent": 70.0
+  },
+  "economics": {
+    "electricity_price_per_kwh": 0.15
+  },
+  "limits": {
+    "temp_min_c": 18.0,
+    "temp_max_c": 26.0,
+    "rh_min_percent": 50.0,
+    "rh_max_percent": 85.0
+  }
+}
