@@ -14,7 +14,7 @@ def test_every_page_renders_before_and_after_a_run():
     app = AppTest.from_file(APP, default_timeout=120).run()
     assert not app.exception
     pages = app.sidebar.radio[0].options
-    assert len(pages) == 9
+    assert len(pages) == 10
     for page in pages:
         app.sidebar.radio[0].set_value(page).run()
         assert not app.exception, page

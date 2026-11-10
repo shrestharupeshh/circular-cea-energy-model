@@ -16,6 +16,11 @@ not to predict a specific facility.
 
 ## Run it
 
+**Windows, no typing:** double-click `Start Simulator.bat` in this folder. It
+installs what is missing the first time and opens the app in your browser.
+
+**Any system, from a terminal:**
+
 ```bash
 cd vertical_farming_simulator
 pip install -r requirements.txt
@@ -92,6 +97,7 @@ analysis/
   energy_analysis.py       component energy, intensity, cost
   scenario_comparison.py   example scenarios, save/load, comparison tables
 visualization/plots.py     Plotly figures and farm schematic
+visualization/farm_view.py 3D view of the farm at a chosen time
 data/weather/              example (synthetic) weather CSV
 data/scenarios/            scenarios saved from the app
 tests/                     116 pytest tests
@@ -111,6 +117,7 @@ Data flow: scenario dict → `validate_config` → `run_simulation` →
 6. Simulation results (energy table and breakdown, temperature, humidity, cooling, export)
 7. Scenario comparison (examples A to F plus your own)
 8. Optimization (placeholder)
+9. Farm view (3D): rotatable view of the room at any day and hour of the run
 
 ## Documentation
 

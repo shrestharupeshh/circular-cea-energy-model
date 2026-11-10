@@ -22,12 +22,13 @@ from config.parameters import default_config, derive_geometry, validate_config
 from models import lighting as lighting_model
 from models import weather as weather_model
 from simulation.engine import run_simulation
-from visualization import plots
+from visualization import farm_view, plots
 
 st.set_page_config(page_title="Vertical Farming Energy Simulator", layout="wide")
 
 PAGES = ["1. Farm configuration", "2. Environmental conditions", "3. Lighting system", "4. HVAC system",
-         "5. Crop growth", "6. Simulation results", "7. Scenario comparison", "8. Optimization", "Model notes"]
+         "5. Crop growth", "6. Simulation results", "7. Scenario comparison", "8. Optimization", "Farm view (3D)",
+         "Model notes"]
 DOCS = Path(__file__).parent / "docs"
 
 if "config" not in st.session_state:
@@ -499,6 +500,32 @@ elif page == PAGES[7]:
             "The planned first version is a grid search over PPFD, photoperiod and temperature setpoint that "
             "minimises total electricity subject to a minimum harvest and temperature/humidity limits, with a "
             "Pareto plot of energy against harvest. Until then, the Scenario comparison page covers manual exploration.")
+
+elif page == "Farm view (3D)":
+    st.header("Farm view (3D)")
+    result = current_result()
+    if result:
+        ts, s = result.timeseries, result.summary
+        steps_per_hour = max(1, int(round(3600.0 / s["time_step_s"])))
+        a, b = st.columns(2)
+        day = a.slider("Day", 1, int(ts["day"].max()), min(15, int(ts["day"].max())))
+        hour = b.slider("Hour of day", 0, 23, 12)
+        step = min(len(ts) - 1, ((day - 1) * 24 + hour) * steps_per_hour)
+        row = ts.iloc[step]
+        cols = st.columns(6)
+        cols[0].metric("Lights", "On" if row["led_schedule_fraction"] > 0 else "Off")
+        cols[1].metric("Indoor temperature", f"{row['indoor_temp_c']:.1f} °C")
+        cols[2].metric("Indoor humidity", f"{row['indoor_rh_percent']:.0f} %")
+        cols[3].metric("Outdoor temperature", f"{row['outdoor_temp_c']:.1f} °C")
+        cols[4].metric("Electrical power", f"{row['power_total_w'] / 1000:.1f} kW")
+        cols[5].metric("Fresh mass per plant",
+                       f"{row['biomass_dry_g_per_plant'] / cfg['crop']['dry_matter_fraction']:.0f} g")
+        st.plotly_chart(farm_view.farm_3d(result, step), width="stretch")
+        st.caption("Drag to rotate, scroll to zoom, hover for details. The layout is schematic (square room, two "
+                   "rack rows). What changes with the sliders comes from the simulation: canopy height and colour "
+                   "follow crop biomass, LED panels light up when the schedule has them on, the HVAC unit is blue "
+                   "when cooling and orange when heating, and the room outline turns red or blue when the air "
+                   "temperature leaves the acceptable range.")
 
 else:
     st.header("Model notes")
